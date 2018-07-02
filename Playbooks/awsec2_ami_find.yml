@@ -1,0 +1,23 @@
+--- # FIND AMI ID FROM AWS CONSOLE
+- hosts: localhost
+  connection: local
+  remote_user: ansible
+  become: yes
+  gather_facts: no
+  vars_files: 
+  - files/awscreds.yml
+  tasks:
+  - name: FIND AMI ID FROM AWS CONSOLE
+    ec2_ami_find:
+      aws_access_key: "{{ aws_id }}"
+      aws_secret_key: "{{ aws_key }}"
+      region: "{{ aws_region }}" 
+      owner: self
+      ami_tags: 
+        Name: MyNewAMI
+      no_result_action: fail
+    register: ami_find
+  - name: Debug Statement
+    debug: msg={{ ami_find.results[0].ami_id }}
+  - name: Debug Statement
+    debug: msg={{ ami_find.results[0].block_device_mapping }}

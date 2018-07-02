@@ -1,0 +1,20 @@
+--- # VPC NET EXAMPLE
+- hosts: localhost
+  connection: local
+  remote_user: ansible
+  become: yes
+  gather_facts: no
+  vars_files:
+  - files/awscreds.yml
+  tasks:
+  - name: VPC NET EXAMPLE
+    ec2_vpc_net:
+      aws_access_key: "{{ aws_id }}"
+      aws_secret_key: "{{ aws_key }}"
+      region: "{{ aws_region }}"
+      name: MyNewVPC
+      state: present
+      cidr_block: 172.16.100.0/24
+    register: vpcblock
+  - name: Print the O/P
+    debug: msg={{ vpcblock }}

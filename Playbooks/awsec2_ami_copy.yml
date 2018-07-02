@@ -1,0 +1,22 @@
+--- # COPY EC2 AMI to DIFFERENT REGION
+- hosts: localhost
+  connection: local
+  remote_user: ansible
+  become: yes
+  gather_facts: no
+  vars_files:
+  - files/awscreds.yml
+  tasks: 
+  - name: COPY EC2 AMI to DIFFERENT REGION
+    ec2_ami_copy: 
+      aws_access_key: "{{ aws_id }}"
+      aws_secret_key: "{{ aws_key }}"
+      source_region: "{{ aws_region }}"
+      region: us-east-1
+      source_image_id: ami-740f3b1b
+      wait: no 
+      name: usEastAMI1
+      tags:
+        Name: MyNewEastAMI1
+        Service: MyNewEastAMIService
+    register: instance

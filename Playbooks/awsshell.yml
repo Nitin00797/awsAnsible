@@ -1,0 +1,12 @@
+--- #AWS EC2 INSTANCE COMMUNICATION
+- hosts: AWS
+  remote_user: ec2-user
+  become_method: sudo
+  gather_facts: yes
+  connection: ssh
+  tasks:
+  - name: Execute shell command on ec2 instance
+    shell: ls -alrt ~
+    register: result
+  - name: Print the output
+    debug: var=result

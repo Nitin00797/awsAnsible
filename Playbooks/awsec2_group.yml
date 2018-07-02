@@ -1,0 +1,27 @@
+--- #APPLY SECURITY GROUP WHILE INSTANCE LAUNCH
+- hosts: localhost
+  connection: local
+  remote_user: ansible
+  become: yes
+  gather_facts: no
+  vars_files:
+  - files/awscreds.yml
+  tasks: 
+  - name: CREATE VPC USIN EC2_GROUP
+    ec2_group: 
+      aws_access_key: "{{ aws_id }}"
+      aws_secret_key: "{{ aws_key }}"
+      region: "{{ aws_region }}"
+      name: MyTestLAGroup
+      description: This is EC2 group demo
+      vpc_id: vpc-3e256956
+      rules:
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+      rules_egress:
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0

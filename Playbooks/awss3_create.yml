@@ -1,0 +1,33 @@
+--- # AWS S3 BUCKET CREATION
+- hosts: localhost
+  connection: local
+  remote_user: ansible
+  become: yes
+  gather_facts: yes
+  vars_files: 
+  - files/awscreds.yml
+  tasks:
+  - name: AWS S3 BUCKET CREATION
+    s3:
+     aws_access_key: "{{ aws_id }}"
+     aws_secret_key: "{{ aws_key }}"
+     region: "{{ aws_region }}"
+     bucket: ansibleplay
+     mode: create
+     permission: public-read-write
+    register: Create_Bucket
+  - name: AWS Copy to Bucket
+    s3:
+     aws_access_key: "{{ aws_id }}"
+     aws_secret_key: "{{ aws_key }}"
+     region: "{{ aws_region }}"
+     bucket: ansibleplay
+     object: awsiam_user.yml
+     src: /home/ansible/Playbooks/awsiam_user.yml
+     mode: put
+    register: copy_files
+  - name: Output for Create
+    debug: var=Create_Bucket
+  - name: Output for Copy
+    debug: var=copy_files
+

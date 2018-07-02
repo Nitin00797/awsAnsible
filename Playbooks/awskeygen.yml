@@ -1,0 +1,16 @@
+--- # AWS KEYGENRATION THROUGH ANSIBLE
+- hosts: localhost
+  remote_user: ansible
+  become: yes
+  connection: local
+  gather_facts: no
+  vars_files: 
+  - files/awscreds.yml
+  tasks:
+  - name: Generate new aws key pair MyKeyPairTestAWS
+    ec2_key: 
+      aws_access_key: "{{ aws_id }}"
+      aws_secret_key: "{{ aws_key }}"
+      name: MyKeyPairTestAWS
+      region: ap-south-1
+      state: absent

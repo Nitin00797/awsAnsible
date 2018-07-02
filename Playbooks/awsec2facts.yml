@@ -1,0 +1,12 @@
+--- # EC2 FACTS
+- hosts: AWS
+  remote_user: ec2-user
+  become_method: sudo
+  connection: ssh
+  gather_facts: yes
+  tasks:
+  - name: Gather EC2 Facts About Running Instances
+    action: ec2_metadata_facts
+  - name: Display the Instance Type with t2.nano
+    debug: msg='This is ansible t2.nano'
+    when: ansible_ec2_instance_type == 't2.nano'
